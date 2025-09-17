@@ -1,11 +1,17 @@
-import { schema } from 'prosemirror-schema-basic';
 import { useMarkToggle } from '../hooks/useMarkToggle';
+import { useListToggle } from '../hooks/useListToggle';
 import { useHistoryActions } from '../hooks/useHistoryActions';
-import { Bold, Italic, Undo, Redo } from '@wix/wix-ui-icons-common';
+import { useEditorContext } from '../context/EditorContext';
+import { Bold, Italic, Undo, Redo, List, NumberedList } from '@wix/wix-ui-icons-common';
 
 export function EditorToolbar() {
-  const boldToggle = useMarkToggle(schema.marks.strong);
-  const italicToggle = useMarkToggle(schema.marks.em);
+  const { state } = useEditorContext();
+  const schema = state.editorState?.schema;
+  
+  const boldToggle = useMarkToggle(schema?.marks.strong!);
+  const italicToggle = useMarkToggle(schema?.marks.em!);
+  const bulletListToggle = useListToggle(schema?.nodes.bullet_list!);
+  const numberedListToggle = useListToggle(schema?.nodes.ordered_list!);
   const { handleUndo, handleRedo, canUndo, canRedo, isDisabled } = useHistoryActions();
 
   return (
@@ -23,6 +29,20 @@ export function EditorToolbar() {
         className={italicToggle.isActive ? 'active' : ''}
       >
         <Italic size="20" />
+      </button>
+      <button 
+        onMouseDown={bulletListToggle.toggleList} 
+        disabled={bulletListToggle.isDisabled}
+        className={bulletListToggle.isActive ? 'active' : ''}
+      >
+        <List size="20" />
+      </button>
+      <button 
+        onMouseDown={numberedListToggle.toggleList} 
+        disabled={numberedListToggle.isDisabled}
+        className={numberedListToggle.isActive ? 'active' : ''}
+      >
+        <NumberedList size="20" />
       </button>
       <div className="toolbar-separator" />
       <button onMouseDown={handleUndo} disabled={isDisabled || !canUndo}>
