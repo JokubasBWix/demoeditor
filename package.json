@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@wix/design-system": "^1.219.0",
+    "prosemirror-model": "^1.25.3"
+  }
+}
