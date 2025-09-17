@@ -3,9 +3,6 @@ import { useEditorContext } from '../context/EditorContext';
 import { createMarkHandler, isMarkActive } from '../utils/markHandlers';
 import { MarkType } from 'prosemirror-model';
 
-/**
- * Custom hook for mark toggle operations
- */
 export const useMarkToggle = (markType: MarkType) => {
   const { state } = useEditorContext();
   

@@ -2,9 +2,6 @@ import { useCallback } from 'react';
 import { undo, redo } from 'prosemirror-history';
 import { useEditorContext } from '../context/EditorContext';
 
-/**
- * Custom hook for undo/redo operations
- */
 export const useHistoryActions = () => {
   const { state } = useEditorContext();
   
