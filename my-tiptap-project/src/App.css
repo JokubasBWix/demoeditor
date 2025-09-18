@@ -99,7 +99,20 @@
   border-color: #0056b3;
 }
 
-/* Joke Replace Button Styles */
+/* Joke Button Styles */
+.joke-insert-button {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.joke-insert-button:hover {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
+  transform: scale(1.05);
+}
+
 .joke-replace-button {
   background-color: #ffc107 !important;
   border-color: #ffc107 !important;

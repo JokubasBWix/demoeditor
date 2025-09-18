@@ -139,14 +139,12 @@ function MenuBar({ editor }: MenuBarProps) {
         </button>
         <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>Horizontal rule</button>
         <button onClick={() => editor.chain().focus().setHardBreak().run()}>Hard break</button>
-        {editorState.isJoke && (
-          <button
-            onClick={() => editor.replaceJoke()}
-            className="joke-replace-button"
-          >
-            🔄 Replace Joke
-          </button>
-        )}
+        <button
+          onClick={() => editorState.isJoke ? editor.replaceJoke() : editor.insertJoke()}
+          className={editorState.isJoke ? "joke-replace-button" : "joke-insert-button"}
+        >
+          {editorState.isJoke ? "🔄 Replace Joke" : "😄 Insert Joke"}
+        </button>
         <button onClick={() => editor.chain().focus().undo().run()} disabled={!editorState.canUndo}>
           Undo
         </button>

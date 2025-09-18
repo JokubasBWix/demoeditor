@@ -4,6 +4,7 @@ import { Node } from '@tiptap/core'
 declare module '@tiptap/core' {
   interface Editor {
     replaceJoke: () => boolean
+    insertJoke: () => void
   }
 }
 
@@ -65,6 +66,12 @@ export const JokesExtension = Extension.create({
       })
       
       return true
+    }
+
+    this.editor.insertJoke = () => {
+      fetchJoke().then(jokeText => {
+        this.editor.commands.insertContent(`<joke>${jokeText}</joke>`)
+      })
     }
   },
 
