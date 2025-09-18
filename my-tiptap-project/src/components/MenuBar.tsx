@@ -33,6 +33,7 @@ function MenuBar({ editor }: MenuBarProps) {
         isBlockquote: ctx.editor.isActive('blockquote') ?? false,
         canUndo: ctx.editor.can().chain().undo().run() ?? false,
         canRedo: ctx.editor.can().chain().redo().run() ?? false,
+        isJoke: ctx.editor.isActive('joke') ?? false,
       }
     },
   })
@@ -138,6 +139,14 @@ function MenuBar({ editor }: MenuBarProps) {
         </button>
         <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>Horizontal rule</button>
         <button onClick={() => editor.chain().focus().setHardBreak().run()}>Hard break</button>
+        {editorState.isJoke && (
+          <button
+            onClick={() => editor.replaceJoke()}
+            className="joke-replace-button"
+          >
+            🔄 Replace Joke
+          </button>
+        )}
         <button onClick={() => editor.chain().focus().undo().run()} disabled={!editorState.canUndo}>
           Undo
         </button>

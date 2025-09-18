@@ -1,6 +1,12 @@
 import { Extension } from '@tiptap/core'
 import { Node } from '@tiptap/core'
 
+declare module '@tiptap/core' {
+  interface Editor {
+    replaceJoke: () => boolean
+  }
+}
+
 const JokeNode = Node.create({
   name: 'joke',
   
@@ -37,10 +43,37 @@ export const JokesExtension = Extension.create({
     return [JokeNode]
   },
 
+  onUpdate() {
+    this.editor.replaceJoke = () => {
+      const { state, dispatch } = this.editor.view
+      const { selection } = state
+      const $pos = selection.$from
+      
+      const isJokeNode = $pos.parent.type.name === 'joke' ? $pos.parent : 
+                      $pos.nodeAfter?.type.name === 'joke' ? $pos.nodeAfter :
+                      $pos.nodeBefore?.type.name === 'joke' ? $pos.nodeBefore : null
+      
+      if (!isJokeNode) {
+        return false
+      }
+
+      fetchJoke().then(jokeText => {
+        const jokeStart = $pos.start($pos.depth)
+        const jokeEnd = $pos.end($pos.depth)
+        const tr = state.tr.replaceWith(jokeStart, jokeEnd, state.schema.text(jokeText))
+        dispatch(tr)
+      })
+      
+      return true
+    }
+  },
+
+
+
   addKeyboardShortcuts() {
     return {
       'Mod-j': () => {
-        const { state, dispatch } = this.editor.view
+        const { state } = this.editor.view
         const { selection } = state
         
         const $pos = selection.$from
@@ -50,18 +83,14 @@ export const JokesExtension = Extension.create({
         const isJokeSelected = jokeNode !== null
         console.log('isJokeSelected', isJokeSelected);
         
-        fetchJoke().then(jokeText => {
-          if (isJokeSelected) {
-            const jokeStart = $pos.start($pos.depth)
-            const jokeEnd = $pos.end($pos.depth)
-            const tr = state.tr.replaceWith(jokeStart, jokeEnd, state.schema.text(jokeText))
-            dispatch(tr)
-          } else {
+        if (isJokeSelected) {
+          return this.editor.replaceJoke()
+        } else {
+          fetchJoke().then(jokeText => {
             this.editor.commands.insertContent(`<joke>${jokeText}</joke>`)
-          }
-        })
-        
-        return true
+          })
+          return true
+        }
       },
     }
   },

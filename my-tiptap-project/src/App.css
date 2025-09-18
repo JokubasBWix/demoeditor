@@ -99,6 +99,33 @@
   border-color: #0056b3;
 }
 
+/* Joke Replace Button Styles */
+.joke-replace-button {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+  color: #212529 !important;
+  font-weight: 600 !important;
+  animation: pulse 2s infinite;
+}
+
+.joke-replace-button:hover {
+  background-color: #e0a800 !important;
+  border-color: #d39e00 !important;
+  transform: scale(1.05);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+  }
+}
+
 /* TipTap Editor Styles */
 .ProseMirror {
   padding: 1rem;
