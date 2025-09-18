@@ -53,6 +53,52 @@
   flex-direction: column;
 }
 
+/* MenuBar Styles */
+.control-group {
+  border-bottom: 1px solid #ddd;
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.button-group button {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.button-group button:hover:not(:disabled) {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.button-group button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-group button.is-active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.button-group button.is-active:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
 /* TipTap Editor Styles */
 .ProseMirror {
   padding: 1rem;

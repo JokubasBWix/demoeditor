@@ -1,15 +1,14 @@
 // src/Tiptap.tsx
 import { useEditor, EditorContent, EditorContext } from '@tiptap/react'
-import { BulletList, ListItem } from '@tiptap/extension-list'
-import Paragraph from '@tiptap/extension-paragraph'
-import Document from '@tiptap/extension-document'
-import Text from '@tiptap/extension-text'
+import StarterKit from '@tiptap/starter-kit'
 import { useMemo } from 'react'
 import EditorStateDisplay from './components/EditorStateDisplay'
+import MenuBar from './components/MenuBar'
+import { JokesExtension } from './plugins/jokes'
 
 const Tiptap = () => {
   const editor = useEditor({
-    extensions: [Document, Paragraph, Text, BulletList, ListItem], // define your extension array
+    extensions: [StarterKit, JokesExtension],
     content: '<p>Hello World!</p>', // initial content
   })
 
@@ -20,6 +19,7 @@ const Tiptap = () => {
     <EditorContext.Provider value={providerValue}>
       <div className="editor-container">
         <div className="editor-wrapper">
+          <MenuBar editor={editor} />
           <EditorContent editor={editor} />
         </div>
         <div className="state-display-wrapper">
