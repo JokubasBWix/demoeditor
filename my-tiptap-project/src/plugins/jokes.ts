@@ -19,6 +19,17 @@ const JokeNode = Node.create({
   },
 })
 
+const fetchJoke = async (): Promise<string> => {
+  try {
+    const response = await fetch('https://api.chucknorris.io/jokes/random')
+    const data = await response.json()
+    return data.value
+  } catch (error) {
+    console.error('Failed to fetch Chuck Norris joke:', error)
+    return 'joke'
+  }
+}
+
 export const JokesExtension = Extension.create({
   name: 'jokes',
 
@@ -29,15 +40,26 @@ export const JokesExtension = Extension.create({
   addKeyboardShortcuts() {
     return {
       'Mod-j': () => {
-        fetch('https://api.chucknorris.io/jokes/random')
-          .then(response => response.json())
-          .then(data => {
-            this.editor.commands.insertContent(`<joke>${data.value}</joke>`)
-          })
-          .catch(error => {
-            console.error('Failed to fetch Chuck Norris joke:', error)
-            this.editor.commands.insertContent('<joke>joke</joke>')
-          })
+        const { state, dispatch } = this.editor.view
+        const { selection } = state
+        
+        const $pos = selection.$from
+        const jokeNode = $pos.parent.type.name === 'joke' ? $pos.parent : 
+                        $pos.nodeAfter?.type.name === 'joke' ? $pos.nodeAfter :
+                        $pos.nodeBefore?.type.name === 'joke' ? $pos.nodeBefore : null
+        const isJokeSelected = jokeNode !== null
+        console.log('isJokeSelected', isJokeSelected);
+        
+        fetchJoke().then(jokeText => {
+          if (isJokeSelected) {
+            const jokeStart = $pos.start($pos.depth)
+            const jokeEnd = $pos.end($pos.depth)
+            const tr = state.tr.replaceWith(jokeStart, jokeEnd, state.schema.text(jokeText))
+            dispatch(tr)
+          } else {
+            this.editor.commands.insertContent(`<joke>${jokeText}</joke>`)
+          }
+        })
         
         return true
       },
