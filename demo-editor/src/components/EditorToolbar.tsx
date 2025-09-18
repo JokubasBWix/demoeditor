@@ -30,6 +30,7 @@ export function EditorToolbar() {
       >
         <Italic size="20" />
       </button>
+      <div className="toolbar-separator" />
       <button 
         onMouseDown={bulletListToggle.toggleList} 
         disabled={bulletListToggle.isDisabled}
